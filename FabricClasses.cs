@@ -9,27 +9,27 @@ namespace StrategyPattern
     public class Money
     {
         private IMoney _money;
-        public Money(string transport, int money)
+        public Money(string transport, int money, Man man)
         {
             MoneyFactory factory = new MoneyFactory();
-            IMoneySituations situations = factory.CreateSituation(transport, money);
+            IMoneySituations situations = factory.CreateSituation(transport, money, man);
             _money = situations.CreateMoney();
             _money.BuildMoney();
         }
     }
     public class MoneyFactory
     {
-        public IMoneySituations CreateSituation(string transport, int money)
+        public IMoneySituations CreateSituation(string transport, int money, Man man)
         {
             if (money <= 0)
                 throw new ArgumentOutOfRangeException();
 
             if (transport.ToUpper().Equals("TAXI"))
-                return new Taxi(money);
+                return new Taxi(money, man);
             else if (transport.ToUpper().Equals("BUS"))
-                return new Bus(money);
+                return new Bus(money, man);
             else if (transport.ToUpper().Equals("BICYCLE"))
-                return new Bicycle(money);
+                return new Bicycle(money, man);
 
             throw new ArgumentException(transport);
         }
@@ -37,19 +37,21 @@ namespace StrategyPattern
     public class Taxi : IMoneySituations
     {
         private int _money;
-        public Taxi(int money)
+        private Man _man;
+        public Taxi(int money, Man man)
         {
             _money = money;
+            _man = man;
         }
 
         public IMoney CreateMoney()
         {
             if (_money > 0 && _money < 10)
-                return new TaxiFewMoney();
+                return new TaxiFewMoney(_man);
             else if (_money >= 10 && _money <= 30)
-                return new TaxiMediumMoney();
+                return new TaxiMediumMoney(_man);
             else if (_money > 30)
-                return new TaxiMuchMoney();
+                return new TaxiMuchMoney(_man);
             else throw new ArgumentException();
         }
     }
@@ -57,17 +59,19 @@ namespace StrategyPattern
     public class Bus : IMoneySituations
     {
         private int _money;
-        public Bus(int money)
+        private Man _man;
+        public Bus(int money, Man man)
         {
             _money = money;
+            _man = man;
         }
 
         public IMoney CreateMoney()
         {
             if (_money > 0 && _money < 10)
-                return new BusFewMoney();
+                return new BusFewMoney(_man);
             else if (_money >= 10)
-                return new BusMuchMoney();
+                return new BusMuchMoney(_man);
             else throw new ArgumentException();
         }
     }
@@ -75,17 +79,19 @@ namespace StrategyPattern
     public class Bicycle : IMoneySituations
     {
         private int _money;
-        public Bicycle(int money)
+        private Man _man;
+        public Bicycle(int money, Man man)
         {
             _money = money;
+            _man = man;
         }
 
         public IMoney CreateMoney()
         {
             if (_money > 0 && _money < 10)
-                return new BicycleFewMoney();
+                return new BicycleFewMoney(_man);
             else if (_money >= 10)
-                return new BicycleMuchMoney();
+                return new BicycleMuchMoney(_man);
             else throw new ArgumentException();
         }
     }

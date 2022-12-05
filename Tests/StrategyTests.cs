@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestPlatform.TestHost;
+using StrategyPattern;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,7 @@ namespace Tests
         [Fact]
         public void Test1()
         {
-
+            NUnit.Framework.Assert.Throws<ArgumentException>(() => MainClass.ManInformation("School", "Taxi", 10));
         }
     }
 }
